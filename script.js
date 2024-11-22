@@ -103,3 +103,21 @@ const calcDisplayBalance = function (movements) {
   labelBalance.textContent = `${total} €`;
 };
 calcDisplayBalance(account1.movements);
+
+// Display Income , Out and interest
+
+const CalcTransactionsDisplay = function (movements) {
+  const allDeposits = movements
+    .filter((mov) => mov > 0)
+    .reduce((acc, mov) => acc + mov);
+  const allWithdrawls = movements
+    .filter((mov) => mov < 0)
+    .reduce((acc, mov) => acc + mov);
+
+  const interest = (allDeposits * 1.2) / 100;
+  labelSumIn.textContent = `${allDeposits} €`;
+  labelSumOut.textContent = `${Math.abs(allWithdrawls)} €`;
+  labelSumInterest.textContent = `${interest} €`;
+};
+
+CalcTransactionsDisplay(account1.movements);
