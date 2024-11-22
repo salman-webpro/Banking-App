@@ -63,6 +63,8 @@ const inputClosePin = document.querySelector(".form__input--pin");
 
 // Project
 
+// display movements
+
 const displayMovements = function (movements) {
   containerMovements.innerHTML = "";
   movements.forEach((mov, i) => {
@@ -79,3 +81,25 @@ const displayMovements = function (movements) {
 };
 
 displayMovements(account1.movements);
+
+//Creating username from owner
+
+const createUserName = (accounts) =>
+  accounts.forEach(
+    (user) =>
+      (user.userName = user.owner
+        .toLowerCase()
+        .split(" ")
+        .map((user) => user.at(0))
+        .join(""))
+  );
+
+createUserName(accounts);
+
+//Display Total
+
+const calcDisplayBalance = function (movements) {
+  const total = movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${total} €`;
+};
+calcDisplayBalance(account1.movements);
