@@ -92,9 +92,9 @@ const createUserName = (accounts) =>
 
 createUserName(accounts);
 
-const calcDisplayBalance = function (movements) {
-  const total = movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${total} €`;
+const calcDisplayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${acc.balance} €`;
 };
 
 const CalcTransactionsDisplay = function (acc) {
@@ -111,6 +111,14 @@ const CalcTransactionsDisplay = function (acc) {
   labelSumInterest.textContent = `${interest} €`;
 };
 
+const updateUI = function (acc) {
+  displayMovements(acc.movements);
+  // display balance
+  calcDisplayBalance(acc);
+  // display summery
+  CalcTransactionsDisplay(acc);
+};
+
 btnLogin.addEventListener("click", function (e) {
   e.preventDefault();
   currentAccount = accounts.find(
@@ -125,11 +133,44 @@ btnLogin.addEventListener("click", function (e) {
     // empty input fields and remve focus
     inputLoginUsername.value = inputLoginPin.value = "";
     inputLoginPin.blur();
-    // calculate Movements
-    displayMovements(currentAccount.movements);
-    // display balance
-    calcDisplayBalance(currentAccount.movements);
-    // display summery
-    CalcTransactionsDisplay(currentAccount);
+
+    updateUI(currentAccount);
+  }
+});
+
+btnTransfer.addEventListener("click", function (e) {
+  e.preventDefault();
+  const transferAmount = Number(inputTransferAmount.value);
+
+  inputTransferAmount.value = inputTransferTo.value = "";
+
+  if (
+    transferAmount > 0 &&
+    transferAmount <= currentAccount.balance &&
+    currentAccount.userName !== inputTransferTo.value
+  ) {
+    accounts
+      .find((acc) => acc.userName === inputTransferTo?.value)
+      ?.movements.push(Number(transferAmount));
+
+    currentAccount.movements.push(Number(-transferAmount));
+
+    updateUI(currentAccount);
+  }
+});
+
+btnClose.addEventListener("click", function (e) {
+  e.preventDefault();
+  const accountTodelete = accounts.findIndex(
+    (acc) => acc.userName === inputCloseUsername.value
+  );
+  if (
+    currentAccount.userName === inputCloseUsername.value &&
+    currentAccount.pin === Number(inputClosePin.value)
+  ) {
+    accounts.splice(accountTodelete, 1);
+    containerApp.style.opacity = 0;
+    inputLoginUsername.value = inputLoginPin.value = "";
+    labelWelcome.textContent = "Log in to get started";
   }
 });
