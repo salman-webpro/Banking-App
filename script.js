@@ -112,7 +112,6 @@ const CalcTransactionsDisplay = function (acc) {
   labelSumOut.textContent = `${Math.abs(allWithdrawls)} €`;
   labelSumInterest.textContent = `${interest} €`;
 };
-
 const updateUI = function (acc) {
   displayMovements(acc.movements);
   // display balance
