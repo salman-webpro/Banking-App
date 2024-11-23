@@ -65,6 +65,7 @@ const inputClosePin = document.querySelector(".form__input--pin");
 
 let currentAccount;
 
+// Display Movements in the list
 const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = "";
   const movOrder = sort ? movements.slice().sort((a, b) => a - b) : movements;
@@ -82,6 +83,7 @@ const displayMovements = function (movements, sort = false) {
   });
 };
 
+// Creating Usernames
 const createUserName = (accounts) =>
   accounts.forEach(
     (user) =>
@@ -94,11 +96,13 @@ const createUserName = (accounts) =>
 
 createUserName(accounts);
 
+// Display Balance
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
   labelBalance.textContent = `${acc.balance} €`;
 };
 
+// Calcaulate and display summery
 const CalcTransactionsDisplay = function (acc) {
   const allDeposits = acc.movements
     .filter((mov) => mov > 0)
@@ -112,6 +116,8 @@ const CalcTransactionsDisplay = function (acc) {
   labelSumOut.textContent = `${Math.abs(allWithdrawls)} €`;
   labelSumInterest.textContent = `${interest} €`;
 };
+
+// Update the information
 const updateUI = function (acc) {
   displayMovements(acc.movements);
   // display balance
@@ -120,6 +126,7 @@ const updateUI = function (acc) {
   CalcTransactionsDisplay(acc);
 };
 
+// Login handle
 btnLogin.addEventListener("click", function (e) {
   e.preventDefault();
   currentAccount = accounts.find(
@@ -139,6 +146,7 @@ btnLogin.addEventListener("click", function (e) {
   }
 });
 
+// Transfer handle
 btnTransfer.addEventListener("click", function (e) {
   e.preventDefault();
   const transferAmount = Number(inputTransferAmount.value);
@@ -160,6 +168,7 @@ btnTransfer.addEventListener("click", function (e) {
   }
 });
 
+// Account close handle
 btnClose.addEventListener("click", function (e) {
   e.preventDefault();
   const accountTodelete = accounts.findIndex(
@@ -176,6 +185,7 @@ btnClose.addEventListener("click", function (e) {
   }
 });
 
+//  Loan Request handle
 btnLoan.addEventListener("click", function (e) {
   e.preventDefault();
   const deposits = currentAccount.movements.filter((mov) => mov > 0);
@@ -188,6 +198,7 @@ btnLoan.addEventListener("click", function (e) {
   }
 });
 
+// Sorting the movement list
 let sorted;
 btnSort.addEventListener("click", function () {
   displayMovements(currentAccount.movements, !sorted);
