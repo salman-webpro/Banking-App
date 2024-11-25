@@ -169,21 +169,21 @@ btnTransfer.addEventListener("click", function (e) {
 });
 
 // Account close handle
-// btnClose.addEventListener("click", function (e) {
-//   e.preventDefault();
-//   const accountTodelete = accounts.findIndex(
-//     (acc) => acc.userName === inputCloseUsername.value
-//   );
-//   if (
-//     currentAccount.userName === inputCloseUsername.value &&
-//     currentAccount.pin === Number(inputClosePin.value)
-//   ) {
-//     accounts.splice(accountTodelete, 1);
-//     containerApp.style.opacity = 0;
-//     inputLoginUsername.value = inputLoginPin.value = "";
-//     labelWelcome.textContent = "Log in to get started";
-//   }
-// });
+btnClose.addEventListener("click", function (e) {
+  e.preventDefault();
+  const accountTodelete = accounts.findIndex(
+    (acc) => acc.userName === inputCloseUsername.value
+  );
+  if (
+    currentAccount.userName === inputCloseUsername.value &&
+    currentAccount.pin === Number(inputClosePin.value)
+  ) {
+    accounts.splice(accountTodelete, 1);
+    containerApp.style.opacity = 0;
+    inputLoginUsername.value = inputLoginPin.value = "";
+    labelWelcome.textContent = "Log in to get started";
+  }
+});
 
 //  Loan Request handle
 btnLoan.addEventListener("click", function (e) {
