@@ -155,13 +155,27 @@ const updateUI = function (acc) {
   CalcTransactionsDisplay(acc);
 };
 
+const logout = function () {
+  labelWelcome.textContent = `Log in to get started`;
+  containerApp.style.opacity = 0;
+  // empty input fields and remve focus
+  inputLoginUsername.value = inputLoginPin.value = "";
+  inputLoginPin.blur();
+};
+
 // Login handle
 btnLogin.addEventListener("click", function (e) {
   e.preventDefault();
+  const now = new Date();
+  const day = now.getDate();
+  const Month = now.getMonth();
+  const Year = now.getFullYear();
+
+  labelDate.textContent = `${day}/${Month}/${Year}`;
   currentAccount = accounts.find(
     (acc) => acc.userName === inputLoginUsername.value
   );
-  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+  if (currentAccount?.pin === +inputLoginPin.value) {
     // display UI
     labelWelcome.textContent = `welcome back ${currentAccount.owner
       .split(" ")
@@ -172,6 +186,7 @@ btnLogin.addEventListener("click", function (e) {
     inputLoginPin.blur();
 
     updateUI(currentAccount);
+    // setTimeout(() => logout(), 5000);
   }
 });
 
