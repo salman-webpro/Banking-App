@@ -65,18 +65,40 @@ const inputClosePin = document.querySelector(".form__input--pin");
 
 let currentAccount;
 
+const formatDate = function (date) {
+  const calcDates = (date1, date2) =>
+    Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
+  // console.log(date);
+
+  const day = date.getDate();
+  const Month = date.getMonth();
+  const Year = date.getFullYear();
+  const currDate = `${day}/${Month}/${Year}`;
+  const daysPassed = calcDates(new Date(), date);
+  console.log(daysPassed);
+  if (daysPassed === 0) return "Today";
+  if (daysPassed === 1) return "yesterday";
+  if (daysPassed < 7) return `${daysPassed} days ago`;
+  else return currDate;
+};
+
 // Display Movements in the list
-const displayMovements = function (movements, sort = false) {
+const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = "";
-  const movOrder = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  const movOrder = sort
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements;
 
   movOrder.forEach((mov, i) => {
+    const date = formatDate(new Date(acc.movementsDates.at(i)));
     const type = mov > 0 ? "deposit" : "withdrawal";
     const html = `
     <div class="movements__row">
       <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
+    <div class="movements__date">${date}</div>
     <div class="movements__value">${mov}€</div>
     </div>`;
     containerMovements.insertAdjacentHTML("afterbegin", html);
