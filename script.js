@@ -65,10 +65,10 @@ const inputClosePin = document.querySelector(".form__input--pin");
 
 let currentAccount;
 
+// Calculating dates and formating
 const formatDate = function (date) {
   const calcDates = (date1, date2) =>
     Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
-  // console.log(date);
 
   const day = date.getDate();
   const Month = date.getMonth();
@@ -155,6 +155,7 @@ const updateUI = function (acc) {
   CalcTransactionsDisplay(acc);
 };
 
+// Logout handle
 const logout = function () {
   labelWelcome.textContent = `Log in to get started`;
   containerApp.style.opacity = 0;
