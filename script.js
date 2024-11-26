@@ -118,13 +118,20 @@ const createUserName = (accounts) =>
 
 createUserName(accounts);
 
+// shwoing dates
+const now = new Date();
+const day = now.getDate();
+const Month = now.getMonth();
+const Year = now.getFullYear();
+
+labelDate.textContent = `${day}/${Month}/${Year}`;
+
 // Display Balance
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
   labelBalance.textContent = `${acc.balance} €`;
 };
 
-// Calcaulate and display summery
 const CalcTransactionsDisplay = function (acc) {
   const allDeposits = acc.movements
     .filter((mov) => mov > 0)
@@ -134,9 +141,9 @@ const CalcTransactionsDisplay = function (acc) {
     .reduce((acc, mov) => acc + mov);
 
   const interest = (allDeposits * acc.interestRate) / 100;
-  labelSumIn.textContent = `${allDeposits} €`;
-  labelSumOut.textContent = `${Math.abs(allWithdrawls)} €`;
-  labelSumInterest.textContent = `${interest} €`;
+  labelSumIn.textContent = `${allDeposits.toFixed(2)} €`;
+  labelSumOut.textContent = `${Math.abs(allWithdrawls).toFixed(2)} €`;
+  labelSumInterest.textContent = `${interest.toFixed(2)} €`;
 };
 
 // Update the information
