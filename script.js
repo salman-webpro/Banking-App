@@ -193,21 +193,22 @@ btnLogin.addEventListener("click", function (e) {
 // Transfer handle
 btnTransfer.addEventListener("click", function (e) {
   e.preventDefault();
-  const transferAmount = Number(inputTransferAmount.value);
-
+  const transferAmount = +inputTransferAmount.value;
+  const reciver = accounts.find(
+    (acc) => acc.userName === inputTransferTo?.value
+  );
   inputTransferAmount.value = inputTransferTo.value = "";
+  const moveDate = new Date().toISOString();
 
   if (
     transferAmount > 0 &&
     transferAmount <= currentAccount.balance &&
     currentAccount.userName !== inputTransferTo.value
   ) {
-    accounts
-      .find((acc) => acc.userName === inputTransferTo?.value)
-      ?.movements.push(Number(transferAmount));
-
+    reciver?.movements.push(Number(transferAmount));
+    reciver?.movementsDates.push(moveDate);
     currentAccount.movements.push(Number(-transferAmount));
-
+    currentAccount.movementsDates.push(moveDate);
     updateUI(currentAccount);
   }
 });
@@ -233,10 +234,12 @@ btnClose.addEventListener("click", function (e) {
 btnLoan.addEventListener("click", function (e) {
   e.preventDefault();
   const deposits = currentAccount.movements.filter((mov) => mov > 0);
-  const loanAmount = Number(inputLoanAmount.value);
+  const loanAmount = Math.floor(inputLoanAmount.value);
   const isValid = deposits.some((mov) => mov >= (loanAmount * 10) / 100);
-  if (inputLoanAmount.value > 0 && isValid) {
-    currentAccount.movements.push(Number(loanAmount));
+  const loanDate = new Date().toISOString();
+  if (loanAmount > 0 && isValid) {
+    currentAccount.movements.push(+loanAmount);
+    currentAccount.movementsDates.push(loanDate);
     updateUI(currentAccount);
     inputLoanAmount.value = "";
   }
