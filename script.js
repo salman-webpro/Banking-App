@@ -63,23 +63,22 @@ const inputClosePin = document.querySelector(".form__input--pin");
 
 // Project
 
-let currentAccount;
+let currentAccount, timer;
 
 // Calculating dates and formating
-const formatDate = function (date) {
+const formatDate = function (date, options) {
   const calcDates = (date1, date2) =>
     Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
 
-  const day = date.getDate();
-  const Month = date.getMonth();
-  const Year = date.getFullYear();
-  const currDate = `${day}/${Month}/${Year}`;
   const daysPassed = calcDates(new Date(), date);
-  console.log(daysPassed);
+  if (options)
+    return new Intl.DateTimeFormat(currentAccount?.locale, options).format(
+      date
+    );
   if (daysPassed === 0) return "Today";
   if (daysPassed === 1) return "yesterday";
   if (daysPassed < 7) return `${daysPassed} days ago`;
-  else return currDate;
+  else return new Intl.DateTimeFormat(currentAccount?.locale).format(date);
 };
 
 // Display Movements in the list
@@ -91,6 +90,7 @@ const displayMovements = function (acc, sort = false) {
     : acc.movements;
 
   movOrder.forEach((mov, i) => {
+    const formattedMov = numberFormatter(mov);
     const date = formatDate(new Date(acc.movementsDates.at(i)));
     const type = mov > 0 ? "deposit" : "withdrawal";
     const html = `
@@ -99,7 +99,7 @@ const displayMovements = function (acc, sort = false) {
       i + 1
     } ${type}</div>
     <div class="movements__date">${date}</div>
-    <div class="movements__value">${mov}€</div>
+    <div class="movements__value">${formattedMov}</div>
     </div>`;
     containerMovements.insertAdjacentHTML("afterbegin", html);
   });
@@ -118,32 +118,43 @@ const createUserName = (accounts) =>
 
 createUserName(accounts);
 
-// shwoing dates
-const now = new Date();
-const day = now.getDate();
-const Month = now.getMonth();
-const Year = now.getFullYear();
+// // shwoing dates
+// const now = new Date();
+// const day = now.getDate();
+// const Month = now.getMonth();
+// const Year = now.getFullYear();
 
-labelDate.textContent = `${day}/${Month}/${Year}`;
+// labelDate.textContent = `${day}/${Month}/${Year}`;
 
 // Display Balance
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance} €`;
+  const formattedMov = numberFormatter(acc.balance);
+  labelBalance.textContent = `${formattedMov}`;
+
+  const options = {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    weekday: "long",
+    hour: "numeric",
+    minute: "numeric",
+  };
+  labelDate.textContent = formatDate(new Date(), options);
 };
 
 const CalcTransactionsDisplay = function (acc) {
   const allDeposits = acc.movements
     .filter((mov) => mov > 0)
     .reduce((acc, mov) => acc + mov);
-  const allWithdrawls = acc.movements
-    .filter((mov) => mov < 0)
-    .reduce((acc, mov) => acc + mov);
+  const allWithdrawls = Math.abs(
+    acc.movements.filter((mov) => mov < 0).reduce((acc, mov) => acc + mov)
+  );
 
   const interest = (allDeposits * acc.interestRate) / 100;
-  labelSumIn.textContent = `${allDeposits.toFixed(2)} €`;
-  labelSumOut.textContent = `${Math.abs(allWithdrawls).toFixed(2)} €`;
-  labelSumInterest.textContent = `${interest.toFixed(2)} €`;
+  labelSumIn.textContent = `${numberFormatter(allDeposits)}`;
+  labelSumOut.textContent = `${numberFormatter(allWithdrawls)}`;
+  labelSumInterest.textContent = `${numberFormatter(interest)}`;
 };
 
 // Update the information
@@ -159,9 +170,24 @@ const updateUI = function (acc) {
 const logout = function () {
   labelWelcome.textContent = `Log in to get started`;
   containerApp.style.opacity = 0;
-  // empty input fields and remve focus
-  inputLoginUsername.value = inputLoginPin.value = "";
-  inputLoginPin.blur();
+};
+
+// timer
+const startLogoutTimer = function () {
+  let time = 20;
+  const tick = function () {
+    const min = `${Math.trunc(time / 60)}`.padStart(2, 0);
+    const seconds = `${time % 60}`.padStart(2, 0);
+    labelTimer.textContent = `${min} : ${seconds}`;
+    if (time === 0) {
+      clearInterval(logoutTimer);
+      logout();
+    }
+    time--;
+  };
+  tick();
+  const logoutTimer = setInterval(tick, 1000);
+  return logoutTimer;
 };
 
 // Login handle
@@ -171,7 +197,8 @@ btnLogin.addEventListener("click", function (e) {
   const day = now.getDate();
   const Month = now.getMonth();
   const Year = now.getFullYear();
-
+  if (timer) clearInterval(timer);
+  timer = startLogoutTimer();
   labelDate.textContent = `${day}/${Month}/${Year}`;
   currentAccount = accounts.find(
     (acc) => acc.userName === inputLoginUsername.value
@@ -187,7 +214,6 @@ btnLogin.addEventListener("click", function (e) {
     inputLoginPin.blur();
 
     updateUI(currentAccount);
-    // setTimeout(() => logout(), 5000);
   }
 });
 
@@ -211,6 +237,8 @@ btnTransfer.addEventListener("click", function (e) {
     currentAccount.movements.push(Number(-transferAmount));
     currentAccount.movementsDates.push(moveDate);
     updateUI(currentAccount);
+    if (timer) clearInterval(timer);
+    timer = startLogoutTimer();
   }
 });
 
@@ -234,14 +262,19 @@ btnClose.addEventListener("click", function (e) {
 //  Loan Request handle
 btnLoan.addEventListener("click", function (e) {
   e.preventDefault();
-  const deposits = currentAccount.movements.filter((mov) => mov > 0);
   const loanAmount = Math.floor(inputLoanAmount.value);
-  const isValid = deposits.some((mov) => mov >= (loanAmount * 10) / 100);
-  const loanDate = new Date().toISOString();
+  const isValid = currentAccount.movements
+    .filter((mov) => mov > 0)
+    .some((mov) => mov >= (loanAmount * 10) / 100);
+
   if (loanAmount > 0 && isValid) {
-    currentAccount.movements.push(+loanAmount);
-    currentAccount.movementsDates.push(loanDate);
-    updateUI(currentAccount);
+    setTimeout(() => {
+      currentAccount.movements.push(+loanAmount);
+      currentAccount.movementsDates.push(new Date().toISOString());
+      updateUI(currentAccount);
+    }, 3000);
+    if (timer) clearInterval(timer);
+    timer = startLogoutTimer();
     inputLoanAmount.value = "";
   }
 });
