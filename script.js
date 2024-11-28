@@ -74,6 +74,8 @@ const inputClosePin = document.querySelector(".form__input--pin");
 
 let currentAccount, timer;
 
+// All the  Number formatter
+
 const numberFormatter = function (num) {
   return new Intl.NumberFormat(currentAccount.locale, {
     style: "currency",
@@ -81,6 +83,7 @@ const numberFormatter = function (num) {
   }).format(num);
 };
 
+// All the  Dates formatter
 const formatDate = function (date, options) {
   const calcDates = (date1, date2) =>
     Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
@@ -96,6 +99,7 @@ const formatDate = function (date, options) {
   else return new Intl.DateTimeFormat(currentAccount?.locale).format(date);
 };
 
+// Displaying All the Movements
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = "";
 
@@ -119,6 +123,7 @@ const displayMovements = function (acc, sort = false) {
   });
 };
 
+// username creation
 const createUserName = (accounts) =>
   accounts.forEach(
     (user) =>
