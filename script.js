@@ -136,6 +136,7 @@ const createUserName = (accounts) =>
 
 createUserName(accounts);
 
+// calculating and displaying total Balance
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
   const formattedMov = numberFormatter(acc.balance);
@@ -152,6 +153,7 @@ const calcDisplayBalance = function (acc) {
   labelDate.textContent = formatDate(new Date(), options);
 };
 
+// calculating and displaying Summery
 const CalcTransactionsDisplay = function (acc) {
   const allDeposits = acc.movements
     .filter((mov) => mov > 0)
