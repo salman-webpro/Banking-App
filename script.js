@@ -154,7 +154,7 @@ const calcDisplayBalance = function (acc) {
 };
 
 // calculating and displaying Summery
-const CalcTransactionsDisplay = function (acc) {
+const CalcSummeryDisplay = function (acc) {
   const allDeposits = acc.movements
     .filter((mov) => mov > 0)
     .reduce((acc, mov) => acc + mov);
@@ -174,7 +174,7 @@ const updateUI = function (acc) {
   // display balance
   calcDisplayBalance(acc);
   // display summery
-  CalcTransactionsDisplay(acc);
+  CalcSummeryDisplay(acc);
 };
 
 // Log Out Handle
@@ -228,6 +228,7 @@ btnLogin.addEventListener("click", function (e) {
   }
 });
 
+// Taransfer Money handle
 btnTransfer.addEventListener("click", function (e) {
   e.preventDefault();
   const transferAmount = +inputTransferAmount.value;
@@ -252,6 +253,7 @@ btnTransfer.addEventListener("click", function (e) {
   }
 });
 
+// Account close handle
 btnClose.addEventListener("click", function (e) {
   e.preventDefault();
   const accountTodelete = accounts.findIndex(
@@ -268,6 +270,7 @@ btnClose.addEventListener("click", function (e) {
   }
 });
 
+// Taking loan handle
 btnLoan.addEventListener("click", function (e) {
   e.preventDefault();
   const loanAmount = Math.floor(inputLoanAmount.value);
@@ -287,6 +290,7 @@ btnLoan.addEventListener("click", function (e) {
   }
 });
 
+// Movements sorting handle
 let sorted;
 btnSort.addEventListener("click", function () {
   displayMovements(currentAccount, !sorted);
