@@ -168,6 +168,7 @@ const CalcTransactionsDisplay = function (acc) {
   labelSumInterest.textContent = `${numberFormatter(interest)}`;
 };
 
+// updating the UI
 const updateUI = function (acc) {
   displayMovements(acc);
   // display balance
@@ -176,12 +177,13 @@ const updateUI = function (acc) {
   CalcTransactionsDisplay(acc);
 };
 
+// Log Out Handle
 const logout = function () {
   labelWelcome.textContent = `Log in to get started`;
   containerApp.style.opacity = 0;
 };
 
-// timer
+// Timer
 const startLogoutTimer = function () {
   let time = 20;
   const tick = function () {
@@ -199,6 +201,7 @@ const startLogoutTimer = function () {
   return logoutTimer;
 };
 
+// Login Handle
 btnLogin.addEventListener("click", function (e) {
   e.preventDefault();
   const now = new Date();
