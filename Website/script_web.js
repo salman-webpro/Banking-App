@@ -7,12 +7,17 @@ const modal = document.querySelector(".modal");
 const overlay = document.querySelector(".overlay");
 const btnCloseModal = document.querySelector(".btn--close-modal");
 const btnsOpenModal = document.querySelectorAll(".btn--show-modal");
+const tabs = document.querySelectorAll(".operations__tab");
+const tabsContainer = document.querySelector(".operations__tab-container");
+const tabsContent = document.querySelectorAll(".operations__content");
 
+// open Modal
 const openModal = function () {
   modal.classList.remove("hidden");
   overlay.classList.remove("hidden");
 };
 
+// close Modal
 const closeModal = function () {
   modal.classList.add("hidden");
   overlay.classList.add("hidden");
@@ -29,6 +34,11 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
+// Smooth Scrolling
+learnMoreBtn.addEventListener("click", () =>
+  section1.scrollIntoView({ behavior: "smooth" })
+);
+
 // Navigation scroll
 document.querySelector(".nav").addEventListener("click", function (e) {
   e.preventDefault();
@@ -37,4 +47,20 @@ document.querySelector(".nav").addEventListener("click", function (e) {
     if (id.includes("section"))
       document.querySelector(id).scrollIntoView({ behavior: "smooth" });
   }
+});
+
+// Tabs
+tabsContainer.addEventListener("click", function (e) {
+  const clicked = e.target.closest(".operations__tab");
+
+  if (!clicked) return;
+  // removing classes
+  tabs.forEach((t) => t.classList.remove("operations__tab--active"));
+  tabsContent.forEach((c) => c.classList.remove("operations__content--active"));
+  // adding classes
+  clicked.classList.add("operations__tab--active");
+  console.log(clicked.dataset.tab);
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add("operations__content--active");
 });
