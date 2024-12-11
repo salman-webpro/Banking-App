@@ -129,7 +129,8 @@ const imagesObsCallback = function (entries, observer) {
 };
 
 const imagesObs = new IntersectionObserver(imagesObsCallback, {
-  threshold: 0.15,
+  threshold: 0,
+  rootMargin: "300px",
 });
 
 images.forEach((img) => imagesObs.observe(img));
