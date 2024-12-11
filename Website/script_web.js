@@ -95,3 +95,21 @@ const headerObs = new IntersectionObserver(obsCallback, {
   rootMargin: `-${navheight}px`,
 });
 headerObs.observe(header);
+
+// scroll sections reveal animation
+const sections = document.querySelectorAll(".section");
+
+const revealObsCallback = function (entries, observer) {
+  const [entry] = entries;
+  if (!entry.isIntersecting) entry.target.classList.add("section--hidden");
+  else entry.target.classList.remove("section--hidden");
+};
+
+const revealObs = new IntersectionObserver(revealObsCallback, {
+  threshold: 0.15,
+});
+
+sections.forEach((section) => {
+  revealObs.observe(section);
+  section.classList.add("section--hidden");
+});
