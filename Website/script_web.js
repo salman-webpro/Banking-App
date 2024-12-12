@@ -140,6 +140,7 @@ const slides = document.querySelectorAll(".slide");
 const slider = document.querySelector(".slider");
 let currSlide = 0;
 
+// slider changing function
 const changeSlide = function (slide) {
   slides.forEach((s, i) => {
     s.style.transform = `translateX(${100 * (i - slide)}%)`;
