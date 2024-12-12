@@ -134,3 +134,75 @@ const imagesObs = new IntersectionObserver(imagesObsCallback, {
 });
 
 images.forEach((img) => imagesObs.observe(img));
+
+// Slider
+const slides = document.querySelectorAll(".slide");
+const slider = document.querySelector(".slider");
+let currSlide = 0;
+
+const changeSlide = function (slide) {
+  slides.forEach((s, i) => {
+    s.style.transform = `translateX(${100 * (i - slide)}%)`;
+  });
+};
+
+const dotsChanging = function (slide) {
+  document
+    .querySelectorAll(".dots__dot")
+    .forEach((s) => s.classList.remove("dots__dot--active"));
+  document
+    .querySelector(`.dots__dot[data-slide="${slide}"]`)
+    .classList.add("dots__dot--active");
+};
+
+const nextSlide = function () {
+  currSlide === slides.length - 1 ? (currSlide = 0) : currSlide++;
+  changeSlide(currSlide);
+  dotsChanging(currSlide);
+};
+
+const previousSlide = function () {
+  currSlide === 0 ? (currSlide = slides.length - 1) : currSlide--;
+  changeSlide(currSlide);
+  dotsChanging(currSlide);
+};
+// slider button actions
+slider.addEventListener("click", function (e) {
+  // next button click
+  if (e.target.classList.contains("slider__btn--right")) nextSlide();
+  // previous button click
+  if (e.target.classList.contains("slider__btn--left")) previousSlide();
+});
+
+// slider change on keypress
+document.addEventListener("keydown", function (e) {
+  e.key === "ArrowLeft" && previousSlide();
+  e.key === "ArrowRight" && nextSlide();
+});
+
+// slider change pagination dots
+const dots = document.querySelector(".dots");
+const createDots = function () {
+  slides.forEach((_, i) => {
+    dots.insertAdjacentHTML(
+      "beforeend",
+      `<button class='dots__dot' data-slide="${i}"></button>`
+    );
+  });
+};
+
+// default behavior
+const init = function () {
+  createDots();
+  changeSlide(0);
+  dotsChanging(0);
+};
+init();
+
+slider.addEventListener("click", function (e) {
+  if (e.target.classList.contains("dots__dot")) {
+    const clickedDot = e.target.dataset.slide;
+    changeSlide(clickedDot);
+    dotsChanging(clickedDot);
+  }
+});
