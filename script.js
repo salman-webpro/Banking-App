@@ -1,7 +1,7 @@
 "use strict";
 
 const account1 = {
-  owner: "Jonas Schmedtmann",
+  owner: "Salman Mahmmud",
   movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
   interestRate: 1.2, // %
   pin: 1111,
@@ -21,7 +21,7 @@ const account1 = {
 };
 
 const account2 = {
-  owner: "Jessica Davis",
+  owner: "Nahian Noman",
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
   interestRate: 1.5,
   pin: 2222,
@@ -40,7 +40,47 @@ const account2 = {
   locale: "en-US",
 };
 
-const accounts = [account1, account2];
+const account3 = {
+  owner: "Tuhin Islam",
+  movements: [6000, 2000, -150, -790, -3210, -3000, 7000, -30],
+  interestRate: 1.8,
+  pin: 3333,
+
+  movementsDates: [
+    "2019-11-01T13:15:33.035Z",
+    "2019-11-30T09:48:16.867Z",
+    "2019-12-25T06:04:23.907Z",
+    "2020-01-25T14:18:46.235Z",
+    "2020-02-05T16:33:06.386Z",
+    "2020-08-10T14:43:26.374Z",
+    "2020-06-25T18:49:59.371Z",
+    "2020-06-26T12:01:20.894Z",
+  ],
+  currency: "USD",
+  locale: "en-UK",
+};
+
+const account4 = {
+  owner: "Shehnewaz Shahid",
+  movements: [10000, 8000, -150, -790, -3210, -3000, 7000, -30],
+  interestRate: 1.8,
+  pin: 4444,
+
+  movementsDates: [
+    "2019-11-01T13:15:33.035Z",
+    "2019-11-30T09:48:16.867Z",
+    "2019-12-25T06:04:23.907Z",
+    "2020-01-25T14:18:46.235Z",
+    "2020-02-05T16:33:06.386Z",
+    "2020-08-10T14:43:26.374Z",
+    "2020-06-25T18:49:59.371Z",
+    "2020-06-26T12:01:20.894Z",
+  ],
+  currency: "USD",
+  locale: "en-UK",
+};
+
+const accounts = [account1, account2, account3, account4];
 
 /////////////////////////////////////////////////
 // Elements
