@@ -212,3 +212,9 @@ const slider = function () {
   });
 };
 slider();
+
+document
+  .querySelector(".nav__item")
+  .parentNode.lastElementChild.addEventListener("click", function () {
+    location.href = "../index.html";
+  });

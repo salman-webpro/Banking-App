@@ -185,7 +185,7 @@ const logout = function () {
 
 // Timer
 const startLogoutTimer = function () {
-  let time = 20;
+  let time = 300;
   const tick = function () {
     const min = `${Math.trunc(time / 60)}`.padStart(2, 0);
     const seconds = `${time % 60}`.padStart(2, 0);
@@ -295,4 +295,8 @@ let sorted;
 btnSort.addEventListener("click", function () {
   displayMovements(currentAccount, !sorted);
   sorted = !sorted;
+});
+
+document.querySelector(".AccountBtn").addEventListener("click", function () {
+  location.href = "./Website/index_web.html";
 });
