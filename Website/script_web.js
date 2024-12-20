@@ -203,6 +203,25 @@ const slider = function () {
   };
   init();
 
+  
+
+  sliderContainer.addEventListener("click", function (e) {
+    if (e.target.classList.contains("dots__dot")) {
+      const clickedDot = e.target.dataset.slide;
+      changeSlide(clickedDot);
+      dotsChanging(clickedDot);
+    }
+  });
+};
+slider();
+
+document
+  .querySelector(".nav__item")
+  .parentNode.lastElementChild.addEventListener("click", function () {
+    location.href = "../index.html";
+  });
+
+  
   sliderContainer.addEventListener("click", function (e) {
     if (e.target.classList.contains("dots__dot")) {
       const clickedDot = e.target.dataset.slide;
